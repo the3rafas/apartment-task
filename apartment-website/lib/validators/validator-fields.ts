@@ -26,6 +26,7 @@ export const apartmentSchema = z.object({
   unitNumber: numberValidator('Unit Number'),
   description: bigTextValidator('Specification', 250),
   area: bigTextValidator('Specification', 100).optional().or(z.literal('')), // Allow empty string
+  addressInfo: bigTextValidator('AddressInfo', 250),
 });
 
 export type ApartmentFormData = z.infer<typeof apartmentSchema>;

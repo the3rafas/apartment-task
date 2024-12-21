@@ -72,7 +72,7 @@ export class CreateApartmentInput {
    * Area of the apartment (optional)
    */
   @IsOptional()
-  @IsNotBlank({ message: 'Name is required and cannot accept white spaces' })
+  @IsNotBlank({ message: 'Area is required and cannot accept white spaces' })
   @Field(() => String, {
     nullable: true,
     description: 'Area of the apartment. Cannot be blank if provided.',
