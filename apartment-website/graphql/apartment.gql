@@ -1,0 +1,42 @@
+query apartments(
+  $filter: ApartmentFilterInput
+  $paginate: PaginatorInput
+  $sort: ApartmentSortInput
+) {
+  Apartments(filter: $filter, paginate: $paginate, sort: $sort) {
+    data {
+      items {
+        id
+        name
+        projectName
+        unitNumber
+        description
+      }
+      pageInfo {
+        page
+        limit
+        totalCount
+      }
+    }
+    message
+  }
+}
+
+mutation createApartment($input: CreateApartmentInput!) {
+  createApartment(input: $input) {
+    data {
+      id
+      name
+      projectName
+      unitNumber
+    }
+    message
+    success
+  }
+}
+
+query countries {
+  countries {
+    data
+  }
+}

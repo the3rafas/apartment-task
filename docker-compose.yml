@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    container_name: db-instance
+    environment:
+      POSTGRES_USER: nawy
+      POSTGRES_PASSWORD: nawy_123
+      POSTGRES_DB: nawy-db
+    ports:
+      - '5454:5432'
+    volumes:
+      - db-instance:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  backend:
+    container_name: app_api
+    restart: always
+    build:
+      context: ./apartment-backend
+      dockerfile: Dockerfile
+    ports:
+      - '5050:3001'
+    environment:
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: nawy
+      DB_PASSWORD: nawy_123
+      DB_NAME: nawy-db
+    depends_on:
+      - db
+    networks:
+      - frontend_network
+      - backend_network
+
+  frontend:
+    container_name: app_client
+    restart: always
+    build:
+      context: ./apartment-website
+      dockerfile: Dockerfile
+    ports:
+      - '8080:3000'
+    depends_on:
+      - backend
+    networks:
+      - frontend_network
+
+volumes:
+  db-instance:
+
+networks:
+  frontend_network:
+    # Specify driver options
+    driver: bridge
+  backend_network:
+    driver: bridge
