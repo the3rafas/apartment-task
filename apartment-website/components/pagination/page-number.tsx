@@ -1,16 +1,22 @@
 'use client';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 interface PageNumbersProps {
   value: number;
   activePage: number;
+  children?: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
 }
 
 const PageNumbers: React.FC<PageNumbersProps> = React.memo(
-  ({ value, activePage }) => {
+  ({ value, activePage, children, className, disabled }) => {
     const isActive = value === activePage;
-
+    const searchParams = useSearchParams();
+    const params = new URLSearchParams(searchParams);
+    params.set('page', value.toString());
     const baseClasses =
       'relative inline-flex items-center text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 transition-colors duration-200 px-4 py-2 w-full h-full flex items-center justify-center';
 
@@ -22,27 +28,32 @@ const PageNumbers: React.FC<PageNumbersProps> = React.memo(
       target.scrollIntoView({ behavior: 'smooth' });
     }
 
-    if (isActive) {
+    if (isActive || disabled) {
       return (
         <span
           aria-current='page'
-          className={clsx(baseClasses, activeClasses)}
+          className={clsx(
+            baseClasses,
+            !disabled && activeClasses,
+            className,
+            disabled && 'cursor-not-allowed'
+          )}
         >
-          {value}
+          {children ? children : value}
         </span>
       );
     }
 
     return (
       <Link
-        href={ `?page=${value}` }
+        href={{ query: params.toString() }}
         scroll={false}
-        className={clsx(baseClasses, inactiveClasses)}
+        className={clsx(baseClasses, inactiveClasses, className)}
         aria-label={`Go to page ${value}`}
         shallow
         onClick={scrollBehavior}
       >
-        {value}
+        {children ? children : value}
       </Link>
     );
   }

@@ -1,6 +1,5 @@
-import clsx from 'clsx';
+'use client';
 import { MoveLeftIcon, MoveRightIcon } from 'lucide-react';
-import Link from 'next/link';
 import React, { useMemo } from 'react';
 import PageNumbers from './page-number';
 
@@ -10,9 +9,6 @@ interface PaginatorBoxProps {
 }
 
 const PaginatorBox: React.FC<PaginatorBoxProps> = ({ page, totalPage }) => {
-  // Remove console logs to optimize performance
-  // console.log(totalPage, page);
-
   // Helper function to generate page numbers
   const generatePageNumbers = useMemo(() => {
     const pages: number[] = [];
@@ -39,41 +35,27 @@ const PaginatorBox: React.FC<PaginatorBoxProps> = ({ page, totalPage }) => {
   // Determine if "Previous" and "Next" buttons should be disabled
   const isPreviousDisabled = page <= 1;
   const isNextDisabled = page >= totalPage;
-
+  function scrollBehavior() {
+    const target = document.getElementById('main') as HTMLElement;
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
   return (
     <div
       aria-label='Pagination Navigation'
       className='isolate inline-flex -space-x-px rounded-md shadow-sm'
     >
-      {isPreviousDisabled ? (
-        <span
-          className={clsx(
-            'relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-not-allowed'
-          )}
-          aria-disabled='true'
-        >
-          <span className='sr-only'>Previous</span>
-          <MoveLeftIcon
-            className='h-5 w-5'
-            aria-hidden='true'
-          />
-        </span>
-      ) : (
-        <Link
-          href={`?page=${page - 1}`}
-          className={clsx(
-            'relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-500 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-none focus:ring-2 focus:ring-secondary'
-          )}
-          aria-label='Previous Page'
-          shallow
-        >
-          <span className='sr-only'>Previous</span>
-          <MoveLeftIcon
-            className='h-5 w-5'
-            aria-hidden='true'
-          />
-        </Link>
-      )}
+      <PageNumbers
+        key={page - 1}
+        value={page - 1}
+        activePage={page}
+        className='!px-2 rounded-l-md'
+        disabled={isPreviousDisabled}
+      >
+        <MoveLeftIcon
+          className='h-5 w-5'
+          aria-hidden='true'
+        />
+      </PageNumbers>
 
       {generatePageNumbers.map((item) => (
         <PageNumbers
@@ -83,35 +65,18 @@ const PaginatorBox: React.FC<PaginatorBoxProps> = ({ page, totalPage }) => {
         />
       ))}
 
-      {isNextDisabled ? (
-        <span
-          className={clsx(
-            'relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 cursor-not-allowed'
-          )}
-          aria-disabled='true'
-        >
-          <span className='sr-only'>Next</span>
-          <MoveRightIcon
-            className='h-5 w-5'
-            aria-hidden='true'
-          />
-        </span>
-      ) : (
-        <Link
-          href={`?page=${page + 1}`}
-          className={clsx(
-            'relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-500 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-none focus:ring-2 focus:ring-secondary'
-          )}
-          aria-label='Next Page'
-          shallow
-        >
-          <span className='sr-only'>Next</span>
-          <MoveRightIcon
-            className='h-5 w-5'
-            aria-hidden='true'
-          />
-        </Link>
-      )}
+      <PageNumbers
+        key={page + 1}
+        value={page + 1}
+        activePage={page}
+        className='!px-2 rounded-r-md'
+        disabled={isNextDisabled}
+      >
+        <MoveRightIcon
+          className='h-5 w-5'
+          aria-hidden='true'
+        />
+      </PageNumbers>
     </div>
   );
 };

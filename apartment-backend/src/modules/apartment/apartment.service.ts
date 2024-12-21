@@ -76,11 +76,11 @@ export class ApartmentService {
         });
     }
     // Filter by country if country is provided
-    if (filter.country) {
+    if (filter.countries) {
       queryBuilder
         .leftJoinAndSelect('apartment.location', 'location')
-        .andWhere('location.country = :country', {
-          country: filter.country,
+        .andWhere('location.country IN (:...countries)', {
+          countries: filter.countries,
         });
     }
     // Filter by unit number if it is provided

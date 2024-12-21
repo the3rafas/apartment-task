@@ -1,8 +1,10 @@
 import { ArgsType, Field, InputType, Int } from '@nestjs/graphql';
 import {
+  IsArray,
   IsEnum,
   IsNumber,
   IsOptional,
+  IsString,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -14,11 +16,13 @@ import { SortEnum } from '../apartment.enum';
 @InputType()
 export class ApartmentFilterInput {
   @IsOptional()
-  @Field(() => String, {
+  @IsArray()
+  @IsString({ each: true })
+  @Field(() => [String], {
     nullable: true,
-    description: 'Name of the country to filter apartments',
+    description: 'Name of the countries to filter apartments',
   })
-  country?: string;
+  countries?: string[];
 
   @IsOptional()
   @Field(() => String, {

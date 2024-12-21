@@ -1,8 +1,7 @@
-import { PlusIcon } from 'lucide-react';
-import { ApartmentCardDefault } from '../components/cards/apartment.default';
-import FilterBox from '../components/filter/filter';
-import ApartmentForm from '../components/forms/create-apartment';
-import PaginatorBox from '../components/pagination/paginate-box';
+import { ApartmentCardDefault } from '@/components/cards/apartment.default';
+import FilterBox from '@/components/filter/filter-box';
+import ApartmentForm from '@/components/forms/create-apartment';
+import PaginatorBox from '@/components/pagination/paginate-box';
 import {
   Drawer,
   DrawerContent,
@@ -10,8 +9,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '../components/ui/drawer';
-import { apartmentsAction } from '../lib/actions/apartment.action';
+} from '@/components/ui/drawer';
+import { apartmentsAction } from '@/lib/actions/apartment.action';
+import { PlusIcon } from 'lucide-react';
 export interface Apartment {
   id: string;
   name: string;
@@ -24,6 +24,8 @@ interface HomeProps {
   searchParams: Promise<{
     page?: string;
     q?: string;
+    countries?: string[];
+    unitNumber: string;
   }>;
 }
 
@@ -43,6 +45,8 @@ export default async function Home({ searchParams }: HomeProps) {
   const data = await apartmentsAction({
     filter: {
       searchKey: searchKey,
+      countries: params?.countries || null,
+      unitNumber: parseInt(params?.unitNumber, 10) || null,
     },
     paginate: {
       page: pagination.page,
@@ -57,7 +61,7 @@ export default async function Home({ searchParams }: HomeProps) {
     <div className='capitalize font-bold text-3xl w-full'>
       <nav className='bg-white w-full fixed border-gray-200 z-20 top-0 start-0 border-b'>
         <div className=' flex justify-end py-3  px-[6rem] '>
-          <Drawer>
+          <Drawer direction='left'>
             <DrawerTrigger
               type='button'
               className='flex items-center gap-2 text-white bg-secondary  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
@@ -83,7 +87,7 @@ export default async function Home({ searchParams }: HomeProps) {
         <FilterBox />
       </header>
       <section className='grid grid-cols-12  gap-6 px-4 mt-10'>
-        {apartmentsResponse.items!.map((apartment: any) => (
+        {apartmentsResponse.items?.map((apartment: any) => (
           <ApartmentCardDefault
             key={apartment!.id}
             value={apartment}

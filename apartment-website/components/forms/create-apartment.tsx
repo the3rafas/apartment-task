@@ -9,12 +9,11 @@ import {
 } from '@/lib/validators/validator-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '../ui/button';
-import { DrawerClose } from '../ui/drawer';
+import { DrawerClose, DrawerFooter } from '../ui/drawer';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
@@ -222,7 +221,25 @@ const ApartmentForm: React.FC = () => {
       </div>
 
       <div className='mt-6 gap-4 w-full flex flex-col'>
-        <Button
+        <DrawerFooter className='flex flex-row justify-between'>
+          <DrawerClose asChild>
+            <Button
+              variant='ghost'
+              ref={ref}
+            >
+              Cancel
+            </Button>
+          </DrawerClose>
+          <DrawerClose asChild>
+            <Button
+              type='submit'
+              variant='secondary'
+            >
+              Submit
+            </Button>
+          </DrawerClose>
+        </DrawerFooter>
+        {/* <Button
           type='submit'
           disabled={isSubmitting}
           className='w-full bg-secondary-hover hover:bg-secondary transition-colors duration-200'
@@ -247,7 +264,7 @@ const ApartmentForm: React.FC = () => {
           >
             Cancel
           </Button>
-        </DrawerClose>
+        </DrawerClose> */}
       </div>
     </form>
   );
