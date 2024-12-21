@@ -43,6 +43,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:3000'
+    environment:
+      GQL_API_URL: http://backend:3001/graphql
     depends_on:
       - backend
     networks:

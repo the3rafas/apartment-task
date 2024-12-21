@@ -230,14 +230,13 @@ const ApartmentForm: React.FC = () => {
               Cancel
             </Button>
           </DrawerClose>
-          <DrawerClose asChild>
-            <Button
-              type='submit'
-              variant='secondary'
-            >
-              Submit
-            </Button>
-          </DrawerClose>
+
+          <Button
+            type='submit'
+            variant='secondary'
+          >
+            Submit
+          </Button>
         </DrawerFooter>
         {/* <Button
           type='submit'

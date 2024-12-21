@@ -7,7 +7,9 @@ export const numberValidator = (flag: string) =>
   z
     .number({ invalid_type_error: `${flag} is required` })
     .int({ message: `${flag} must be an integer` })
-    .positive({ message: `${flag} must be positive` });
+    .positive({ message: `${flag} must be positive` })
+    .max(50, { message: `${flag} must be at most 50` });
+  ;
 
 export const bigTextValidator = (flag: string, length: number = 250) =>
   z
@@ -26,7 +28,7 @@ export const apartmentSchema = z.object({
   unitNumber: numberValidator('Unit Number'),
   description: bigTextValidator('Specification', 250),
   area: bigTextValidator('Specification', 100).optional().or(z.literal('')), // Allow empty string
-  addressInfo: bigTextValidator('AddressInfo', 250),
+  addressInfo: bigTextValidator('AddressInfo', 500),
 });
 
 export type ApartmentFormData = z.infer<typeof apartmentSchema>;

@@ -11,6 +11,7 @@ query apartments(
         projectName
         unitNumber
         description
+        createdAt
       }
       pageInfo {
         page
@@ -38,5 +39,31 @@ mutation createApartment($input: CreateApartmentInput!) {
 query countries {
   countries {
     data
+  }
+}
+
+
+query apartment($apartmentId: String!) {
+  Apartment(input: { apartmentId: $apartmentId }) {
+    data {
+      id
+      createdAt
+      updatedAt
+      name
+      description
+      projectName
+      unitNumber
+      area
+      addressInfo
+      specifications
+      location {
+        id
+        country
+        city
+      }
+    }
+    message
+    code
+    success
   }
 }
