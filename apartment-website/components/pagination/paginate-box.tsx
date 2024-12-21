@@ -35,10 +35,7 @@ const PaginatorBox: React.FC<PaginatorBoxProps> = ({ page, totalPage }) => {
   // Determine if "Previous" and "Next" buttons should be disabled
   const isPreviousDisabled = page <= 1;
   const isNextDisabled = page >= totalPage;
-  function scrollBehavior() {
-    const target = document.getElementById('main') as HTMLElement;
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
+
   return (
     <div
       aria-label='Pagination Navigation'
